@@ -1,0 +1,17 @@
+{
+  "name": "Calculadora Salarial SV",
+  "short_name": "Salario SV",
+  "description": "Calculadora de salario neto El Salvador 2025 con AFP, ISSS, ISR y presupuesto 50/30/20",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#006B5E",
+  "lang": "es-SV",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ]
+}
