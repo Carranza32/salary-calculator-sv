@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useSalaryStore } from "@/stores/salary-store";
 import { useHistoryStore } from "@/stores/history-store";
 import { formatCurrency } from "@/lib/format";
@@ -19,6 +19,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { ShareableResultWidget } from "@/components/share/shareable-result-widget";
 import { exportResultAsImage, exportResultAsPdf } from "@/lib/export/share-export";
+import { useCountUp } from "@/hooks/use-count-up";
 
 export function ResultCard() {
   const result = useSalaryStore((s) => s.result);
@@ -27,23 +28,37 @@ export function ResultCard() {
   const tenure = useSalaryStore((s) => s.tenure);
   const viewPerspective = useSalaryStore((s) => s.viewPerspective);
   const includeInsaforp = useSalaryStore((s) => s.includeInsaforp);
+  const benefits = useSalaryStore((s) => s.benefits);
   const saveEntry = useHistoryStore((s) => s.saveEntry);
 
   const [saveOpen, setSaveOpen] = useState(false);
   const [title, setTitle] = useState("");
 
-  if (!result || result.salarioBruto <= 0) return null;
+  // ── GSAP count-up refs ────────────────────────────────────────────────
+  const heroRef = useRef<HTMLSpanElement>(null);
+  const biweeklyRef = useRef<HTMLSpanElement>(null);
 
-  const isFreelance = result.isFreelance;
+  // Derive values before early return (hooks must always run)
+  const isFreelance = result?.isFreelance ?? false;
   const showEmployerCost = viewPerspective === "empleador" && !isFreelance;
 
-  const mainAmount = showEmployerCost
-    ? result.salarioLiquidoMensual
-    : result.salarioNeto;
+  const mainAmount = result
+    ? showEmployerCost
+      ? result.salarioLiquidoMensual
+      : result.salarioNeto
+    : 0;
 
-  const biweeklyAmount = showEmployerCost
-    ? result.salarioLiquidoQuincenal
-    : result.salarioNeto / 2;
+  const biweeklyAmount = result
+    ? showEmployerCost
+      ? result.salarioLiquidoQuincenal
+      : result.salarioNeto / 2
+    : 0;
+
+  // ── Count-up animations (always before early return) ─────────────────
+  useCountUp(heroRef, mainAmount, formatCurrency, 0.45);
+  useCountUp(biweeklyRef, biweeklyAmount, formatCurrency, 0.40);
+
+  if (!result || result.salarioBruto <= 0) return null;
 
   const mainLabel = showEmployerCost
     ? "Costo total mensual"
@@ -80,9 +95,23 @@ export function ResultCard() {
 
   const handlePdf = async () => {
     try {
-      await exportResultAsPdf(result, title || undefined);
+      console.log("handlePdf: Iniciando generación de PDF...", {
+        result,
+        viewPerspective,
+        includeInsaforp,
+        hasBenefits: !!benefits
+      });
+      await exportResultAsPdf(
+        result,
+        viewPerspective,
+        includeInsaforp,
+        benefits,
+        title || undefined
+      );
+      console.log("handlePdf: PDF generado con éxito");
       toast.success("PDF descargado");
-    } catch {
+    } catch (err) {
+      console.error("handlePdf: Error capturado en generación de PDF:", err);
       toast.error("No se pudo generar el PDF");
     }
   };
@@ -141,6 +170,7 @@ export function ResultCard() {
             {/* Hero amount */}
             <div className="flex items-end gap-3 mt-1">
               <span
+                ref={heroRef}
                 className="font-extrabold tracking-tight tabular-nums leading-none"
                 style={{ fontSize: "clamp(2.6rem, 6vw, 3.5rem)" }}
               >
@@ -178,7 +208,7 @@ export function ResultCard() {
               <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-emerald-100/60 select-none">
                 {subLabel}
               </span>
-              <span className="text-xl font-bold tabular-nums text-white">
+              <span ref={biweeklyRef} className="text-xl font-bold tabular-nums text-white">
                 {formatCurrency(biweeklyAmount)}
               </span>
             </div>

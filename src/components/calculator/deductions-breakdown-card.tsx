@@ -3,6 +3,8 @@
 import { formatCurrency } from "@/lib/format";
 import { useSalaryStore } from "@/stores/salary-store";
 import { Checkbox } from "@/components/ui/checkbox";
+import { AnimatedAmount } from "@/components/ui/animated-amount";
+import { motion } from "framer-motion";
 import {
   Landmark,
   HeartPulse,
@@ -73,7 +75,7 @@ export function DeductionsBreakdownCard({ view = "all" }: DeductionsBreakdownPro
     if (view === "accordions-only") return null;
     return (
       <div className="space-y-4 animate-in fade-in duration-300 w-full">
-        <div className="rounded-3xl p-6 overflow-hidden flex flex-col justify-between" style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.65)", boxShadow: "0 8px 32px -8px rgba(0,0,0,0.12), 0 2px 10px -2px rgba(0,0,0,0.07), inset 0 1px 0 rgba(255,255,255,0.95), inset 0 -1px 0 rgba(0,0,0,0.03)" }}>
+        <div className="rounded-3xl p-6 overflow-hidden flex flex-col justify-between transition-colors duration-300" style={{ background: "var(--glass-bg)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid var(--glass-border)", boxShadow: "var(--glass-shadow)" }}>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-6">
             <div>
               <h3 className="text-xl font-bold tracking-tight">
@@ -87,9 +89,10 @@ export function DeductionsBreakdownCard({ view = "all" }: DeductionsBreakdownPro
               <span className="text-xs font-bold text-destructive uppercase tracking-wider">
                 Total Retenido (10%)
               </span>
-              <span className="text-2xl font-black text-destructive tabular-nums leading-none">
-                {formatCurrency(result.totalDeducciones)}
-              </span>
+              <AnimatedAmount
+                value={result.totalDeducciones}
+                className="text-2xl font-black text-destructive tabular-nums leading-none"
+              />
             </div>
           </div>
 
@@ -101,9 +104,10 @@ export function DeductionsBreakdownCard({ view = "all" }: DeductionsBreakdownPro
                 </div>
                 <span className="font-semibold text-sm">Retención ISR Renta (10%)</span>
               </div>
-              <span className="text-2xl font-bold tabular-nums tracking-tight mb-1">
-                {formatCurrency(result.renta)}
-              </span>
+              <AnimatedAmount
+                value={result.renta}
+                className="text-2xl font-bold tabular-nums tracking-tight mb-1"
+              />
               <span className="text-xs text-muted-foreground">
                 Monto fijo descontado sobre honorarios brutos
               </span>
@@ -118,11 +122,13 @@ export function DeductionsBreakdownCard({ view = "all" }: DeductionsBreakdownPro
                 {segmentsWithPct.map((s, idx) => {
                   if (s.percentage <= 0) return null;
                   return (
-                    <div
+                    <motion.div
                       key={idx}
                       className="relative group cursor-pointer h-full transition-opacity hover:opacity-90 flex-shrink-0"
+                      initial={{ width: 0 }}
+                      animate={{ width: `${s.percentage}%` }}
+                      transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
                       style={{
-                        width: `${s.percentage}%`,
                         backgroundColor: s.color,
                       }}
                     >
@@ -136,7 +142,7 @@ export function DeductionsBreakdownCard({ view = "all" }: DeductionsBreakdownPro
                         </div>
                         <div className="w-1.5 h-1.5 bg-popover border-r border-b border-border rotate-45 -mt-1" />
                       </div>
-                    </div>
+                    </motion.div>
                   );
                 })}
               </div>
@@ -184,7 +190,7 @@ export function DeductionsBreakdownCard({ view = "all" }: DeductionsBreakdownPro
     <div className="space-y-6 animate-in fade-in duration-300 w-full">
       {/* 1. Tarjeta Principal de Descuentos de Ley */}
       {showDeductions && (
-        <div className="rounded-3xl p-6 overflow-hidden flex flex-col justify-between flex-grow" style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.65)", boxShadow: "0 8px 32px -8px rgba(0,0,0,0.12), 0 2px 10px -2px rgba(0,0,0,0.07), inset 0 1px 0 rgba(255,255,255,0.95), inset 0 -1px 0 rgba(0,0,0,0.03)" }}>
+        <div className="rounded-3xl p-6 overflow-hidden flex flex-col justify-between flex-grow transition-colors duration-300" style={{ background: "var(--glass-bg)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid var(--glass-border)", boxShadow: "var(--glass-shadow)" }}>
           {/* Cabecera y Total */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8">
             <div>
@@ -199,9 +205,10 @@ export function DeductionsBreakdownCard({ view = "all" }: DeductionsBreakdownPro
               <span className="text-xs font-bold text-destructive uppercase tracking-wider">
                 Total Retenido
               </span>
-              <span className="text-2xl font-black text-destructive tabular-nums leading-none">
-                {formatCurrency(result.totalDeducciones)}
-              </span>
+              <AnimatedAmount
+                value={result.totalDeducciones}
+                className="text-2xl font-black text-destructive tabular-nums leading-none"
+              />
             </div>
           </div>
 
@@ -214,9 +221,10 @@ export function DeductionsBreakdownCard({ view = "all" }: DeductionsBreakdownPro
                 </div>
                 <span className="font-semibold text-sm">AFP (7.25%)</span>
               </div>
-              <span className="text-2xl font-bold tabular-nums tracking-tight mb-1">
-                {formatCurrency(result.afpTrabajador)}
-              </span>
+              <AnimatedAmount
+                value={result.afpTrabajador}
+                className="text-2xl font-bold tabular-nums tracking-tight mb-1"
+              />
               <span className="text-xs text-muted-foreground">
                 Tu aporte al fondo de pensión
               </span>
@@ -229,9 +237,10 @@ export function DeductionsBreakdownCard({ view = "all" }: DeductionsBreakdownPro
                 </div>
                 <span className="font-semibold text-sm">ISSS (3%)</span>
               </div>
-              <span className="text-2xl font-bold tabular-nums tracking-tight mb-1">
-                {formatCurrency(result.isssTrabajador)}
-              </span>
+              <AnimatedAmount
+                value={result.isssTrabajador}
+                className="text-2xl font-bold tabular-nums tracking-tight mb-1"
+              />
               <span className="text-xs text-muted-foreground">
                 Seguro social (Tope base $1,000)
               </span>
@@ -244,9 +253,10 @@ export function DeductionsBreakdownCard({ view = "all" }: DeductionsBreakdownPro
                 </div>
                 <span className="font-semibold text-sm">Renta (ISR)</span>
               </div>
-              <span className="text-2xl font-bold tabular-nums tracking-tight mb-1">
-                {formatCurrency(result.renta)}
-              </span>
+              <AnimatedAmount
+                value={result.renta}
+                className="text-2xl font-bold tabular-nums tracking-tight mb-1"
+              />
               <span className="text-xs text-muted-foreground">
                 Impuesto según tramo gravable
               </span>
@@ -262,11 +272,13 @@ export function DeductionsBreakdownCard({ view = "all" }: DeductionsBreakdownPro
               {segmentsWithPct.map((s, idx) => {
                 if (s.percentage <= 0) return null;
                 return (
-                  <div
+                  <motion.div
                     key={idx}
                     className="relative group cursor-pointer h-full transition-opacity hover:opacity-90 flex-shrink-0"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${s.percentage}%` }}
+                    transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
                     style={{
-                      width: `${s.percentage}%`,
                       backgroundColor: s.color,
                     }}
                   >
@@ -282,7 +294,7 @@ export function DeductionsBreakdownCard({ view = "all" }: DeductionsBreakdownPro
                       </div>
                       <div className="w-1.5 h-1.5 bg-popover border-r border-b border-border rotate-45 -mt-1" />
                     </div>
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>
@@ -311,7 +323,7 @@ export function DeductionsBreakdownCard({ view = "all" }: DeductionsBreakdownPro
 
           {/* Card A: Prestaciones y Beneficios Anuales de Ley */}
           {benefits && (
-            <div className="rounded-3xl p-6 md:p-8 overflow-hidden" style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.65)", boxShadow: "0 8px 32px -8px rgba(0,0,0,0.12), 0 2px 10px -2px rgba(0,0,0,0.07), inset 0 1px 0 rgba(255,255,255,0.95), inset 0 -1px 0 rgba(0,0,0,0.03)" }}>
+            <div className="rounded-3xl p-6 md:p-8 overflow-hidden transition-colors duration-300" style={{ background: "var(--glass-bg)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid var(--glass-border)", boxShadow: "var(--glass-shadow)" }}>
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-2xl text-primary border border-primary/20 flex-shrink-0">
                   <Coins className="h-6 w-6" />
@@ -349,9 +361,10 @@ export function DeductionsBreakdownCard({ view = "all" }: DeductionsBreakdownPro
                       </div>
                     </div>
                     <div className="text-right flex-shrink-0 font-mono">
-                      <span className="text-base font-bold text-foreground">
-                        {formatCurrency(benefits.aguinaldo)}
-                      </span>
+                      <AnimatedAmount
+                        value={benefits.aguinaldo}
+                        className="text-base font-bold text-foreground"
+                      />
                     </div>
                   </div>
 
@@ -371,9 +384,10 @@ export function DeductionsBreakdownCard({ view = "all" }: DeductionsBreakdownPro
                       </div>
                     </div>
                     <div className="text-right flex-shrink-0 font-mono">
-                      <span className="text-base font-bold text-foreground">
-                        {formatCurrency(benefits.vacaciones)}
-                      </span>
+                      <AnimatedAmount
+                        value={benefits.vacaciones}
+                        className="text-base font-bold text-foreground"
+                      />
                     </div>
                   </div>
 
@@ -393,9 +407,10 @@ export function DeductionsBreakdownCard({ view = "all" }: DeductionsBreakdownPro
                       </div>
                     </div>
                     <div className="text-right flex-shrink-0 font-mono">
-                      <span className="text-base font-bold text-foreground">
-                        {formatCurrency(benefits.indemnizacion)}
-                      </span>
+                      <AnimatedAmount
+                        value={benefits.indemnizacion}
+                        className="text-base font-bold text-foreground"
+                      />
                     </div>
                   </div>
 
@@ -406,9 +421,10 @@ export function DeductionsBreakdownCard({ view = "all" }: DeductionsBreakdownPro
                   <span className="text-xs font-bold text-primary uppercase tracking-wider mb-2">
                     Total Anual Extra
                   </span>
-                  <span className="text-3xl font-black text-primary tabular-nums tracking-tight font-mono mb-2">
-                    {formatCurrency(benefits.total)}
-                  </span>
+                  <AnimatedAmount
+                    value={benefits.total}
+                    className="text-3xl font-black text-primary tabular-nums tracking-tight font-mono mb-2"
+                  />
                   <p className="text-xs text-muted-foreground max-w-[200px] leading-relaxed">
                     ¡Representa un ingreso adicional equivalente al{" "}
                     <span className="font-bold text-foreground">{extraPct}%</span> de tu salario anual bruto!
@@ -419,7 +435,7 @@ export function DeductionsBreakdownCard({ view = "all" }: DeductionsBreakdownPro
           )}
 
           {/* Card B: ¿Cuánto le cuestas a tu empresa? (Costo Patronal Mensual) */}
-          <div className="rounded-3xl p-6 md:p-8 overflow-hidden" style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.65)", boxShadow: "0 8px 32px -8px rgba(0,0,0,0.12), 0 2px 10px -2px rgba(0,0,0,0.07), inset 0 1px 0 rgba(255,255,255,0.95), inset 0 -1px 0 rgba(0,0,0,0.03)" }}>
+          <div className="rounded-3xl p-6 md:p-8 overflow-hidden transition-colors duration-300" style={{ background: "var(--glass-bg)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid var(--glass-border)", boxShadow: "var(--glass-shadow)" }}>
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 flex items-center justify-center bg-indigo-500/10 rounded-2xl text-indigo-500 border border-indigo-500/20 flex-shrink-0">
                 <Building2 className="h-6 w-6" />
@@ -454,9 +470,10 @@ export function DeductionsBreakdownCard({ view = "all" }: DeductionsBreakdownPro
                     </div>
                   </div>
                   <div className="text-right flex-shrink-0 font-mono">
-                    <span className="text-base font-bold text-foreground">
-                      {formatCurrency(result.afpPatronal)}
-                    </span>
+                    <AnimatedAmount
+                      value={result.afpPatronal}
+                      className="text-base font-bold text-foreground"
+                    />
                   </div>
                 </div>
 
@@ -476,9 +493,10 @@ export function DeductionsBreakdownCard({ view = "all" }: DeductionsBreakdownPro
                     </div>
                   </div>
                   <div className="text-right flex-shrink-0 font-mono">
-                    <span className="text-base font-bold text-foreground">
-                      {formatCurrency(result.isssPatronal)}
-                    </span>
+                    <AnimatedAmount
+                      value={result.isssPatronal}
+                      className="text-base font-bold text-foreground"
+                    />
                   </div>
                 </div>
 
@@ -509,9 +527,10 @@ export function DeductionsBreakdownCard({ view = "all" }: DeductionsBreakdownPro
                     </div>
                   </div>
                   <div className="text-right flex-shrink-0 font-mono">
-                    <span className="text-base font-bold text-foreground">
-                      {includeInsaforp ? formatCurrency(result.insaforpPatronal) : "$0.00"}
-                    </span>
+                    <AnimatedAmount
+                      value={includeInsaforp ? result.insaforpPatronal : 0}
+                      className="text-base font-bold text-foreground"
+                    />
                   </div>
                 </div>
 
@@ -522,9 +541,10 @@ export function DeductionsBreakdownCard({ view = "all" }: DeductionsBreakdownPro
                 <span className="text-xs font-bold text-indigo-500 uppercase tracking-wider mb-2">
                   Costo Total Empresa
                 </span>
-                <span className="text-3xl font-black text-indigo-500 tabular-nums tracking-tight font-mono mb-2">
-                  {formatCurrency(costoTotalPatronal)}
-                </span>
+                <AnimatedAmount
+                  value={costoTotalPatronal}
+                  className="text-3xl font-black text-indigo-500 tabular-nums tracking-tight font-mono mb-2"
+                />
                 <p className="text-xs text-muted-foreground max-w-[200px] leading-relaxed">
                   Para pagarte un bruto de {formatCurrency(result.salarioBruto)}, la empresa asume un adicional del{" "}
                   <span className="font-bold text-foreground">+{markupPct}%</span> en cargas patronales obligatorias.

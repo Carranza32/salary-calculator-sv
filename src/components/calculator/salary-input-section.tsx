@@ -15,6 +15,7 @@ import {
 import { useSalaryStore } from "@/stores/salary-store";
 import { RotateCcw, Building, FileText, Sparkles, Info } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { motion } from "framer-motion";
 
 const TENURE_OPTIONS: { value: TenureKey; label: string }[] = [
   { value: "menos_1", label: "< 1 año" },
@@ -94,31 +95,40 @@ export function SalaryInputSection() {
 
       {/* ── Mode toggle: Bruto / Neto ────────────────────────────────────── */}
       <div
-        className="flex w-full p-1 rounded-2xl"
+        className="flex w-full p-1 rounded-2xl relative"
         style={{
           background: "var(--muted)",
           border: "1px solid var(--border)",
         }}
       >
-        {(["bruto_a_neto", "neto_a_bruto"] as const).map((m) => (
-          <button
-            key={m}
-            type="button"
-            onClick={() => setMode(m)}
-            className="flex-1 py-2.5 text-xs font-semibold rounded-xl transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-primary/50 cursor-pointer"
-            style={
-              mode === m
-                ? {
+        {(["bruto_a_neto", "neto_a_bruto"] as const).map((m) => {
+          const isActive = mode === m;
+          return (
+            <button
+              key={m}
+              type="button"
+              onClick={() => setMode(m)}
+              className="flex-1 py-2.5 text-xs font-semibold rounded-xl transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-primary/50 cursor-pointer relative z-10"
+              style={{
+                color: isActive ? "var(--primary-foreground)" : "var(--muted-foreground)",
+              }}
+            >
+              {isActive && (
+                <motion.div
+                  layoutId="activeModeIndicator"
+                  className="absolute inset-0 rounded-xl"
+                  style={{
                     background: "var(--primary)",
-                    color: "var(--primary-foreground)",
                     boxShadow: "0 2px 8px rgba(18,122,87,0.30)",
-                  }
-                : { color: "var(--muted-foreground)" }
-            }
-          >
-            {m === "bruto_a_neto" ? "Ingresar Bruto" : "Ingresar Neto"}
-          </button>
-        ))}
+                    zIndex: -1,
+                  }}
+                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                />
+              )}
+              {m === "bruto_a_neto" ? "Ingresar Bruto" : "Ingresar Neto"}
+            </button>
+          );
+        })}
       </div>
 
       {/* ── Salary input ────────────────────────────────────────────────── */}
