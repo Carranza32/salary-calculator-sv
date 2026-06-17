@@ -19,7 +19,9 @@ export function ThemeAccentPicker() {
     const id =
       (fromDom && isAccentPreset(fromDom) ? fromDom : null) ??
       (prefs.accent && isAccentPreset(prefs.accent) ? prefs.accent : DEFAULT_ACCENT);
-    setActive(id);
+    setTimeout(() => {
+      setActive(id);
+    }, 0);
   }, []);
 
   const apply = (accent: AccentPreset) => {

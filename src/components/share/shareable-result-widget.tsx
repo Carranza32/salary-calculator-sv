@@ -28,7 +28,7 @@ export function ShareableResultWidget({ id }: { id: string }) {
         <p>30% Gustos: {formatCurrency(buckets.gustos)}</p>
         <p>20% Ahorro: {formatCurrency(buckets.ahorros)}</p>
       </div>
-      <p className="text-xs text-gray-500">El Salvador · 2025 · Estimación</p>
+      <p className="text-xs text-gray-500">El Salvador · 2026 · Estimación</p>
     </div>
   );
 }

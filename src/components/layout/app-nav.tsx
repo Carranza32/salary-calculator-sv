@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Calculator, History, Wallet } from "lucide-react";
+import { Calculator, History } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { href: "/", label: "Calculadora", icon: Calculator },
-  { href: "/presupuesto", label: "Presupuesto", icon: Wallet },
+  // { href: "/presupuesto", label: "Presupuesto", icon: Wallet },
   { href: "/historial", label: "Historial", icon: History },
 ];
 

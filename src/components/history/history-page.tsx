@@ -78,7 +78,7 @@ export function HistoryPage() {
     <div className="mx-auto max-w-4xl space-y-6">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-2xl font-bold">Historial</h2>
+          <h1 className="text-2xl font-bold">Historial</h1>
           <p className="text-sm text-muted-foreground">
             Selecciona hasta {MAX_COMPARE} ofertas para comparar
           </p>

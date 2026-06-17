@@ -71,7 +71,7 @@ export async function exportResultAsPdf(
   y += 6;
   doc.setFontSize(9);
   doc.text(
-    "Cálculo estimado con base en normativa 2025. Consulte a un contador para decisiones formales.",
+    "Cálculo estimado con base en normativa 2026. Consulte a un contador para decisiones formales.",
     14,
     y,
     { maxWidth: 180 },

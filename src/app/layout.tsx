@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { AppProviders } from "@/components/providers/app-providers";
 import { PageShell } from "@/components/layout/page-shell";
+import { Analytics } from "@/components/seo/analytics";
 import "./globals.css";
 
 const inter = Inter({
@@ -9,22 +10,28 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://calculadora-salarial.sv";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Calculadora Salarial SV | Salario neto El Salvador 2025",
+    default: "Calculadora Salarial SV | Salario neto El Salvador 2026",
     template: "%s | Calculadora Salarial SV",
   },
   description:
-    "Calcula tu salario neto en El Salvador con deducciones AFP, ISSS e ISR 2025. Presupuesto 50/30/20 y comparación de ofertas laborales.",
+    "Calcula tu salario neto en El Salvador con deducciones AFP, ISSS e ISR 2026. Presupuesto 50/30/20 y comparación de ofertas laborales.",
   keywords: [
     "calculadora salario",
     "El Salvador",
     "salario neto",
     "AFP",
     "ISSS",
-    "ISR 2025",
+    "ISR 2026",
   ],
   manifest: "/manifest.webmanifest",
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export const viewport: Viewport = {
@@ -42,6 +49,7 @@ export default function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning data-accent="teal">
       <body className={`${inter.variable} font-sans antialiased`}>
+        <Analytics />
         <AppProviders>
           <PageShell>{children}</PageShell>
         </AppProviders>
@@ -49,3 +57,4 @@ export default function RootLayout({
     </html>
   );
 }
+

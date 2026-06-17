@@ -23,6 +23,8 @@ export interface SalaryResult {
   totalDeducciones: number;
   deduccionesTotalesPatronales: number;
   afpEntidad: string;
+  insaforpPatronal: number;
+  isFreelance: boolean;
 }
 
 export interface SalaryResultComputed extends SalaryResult {
@@ -105,6 +107,10 @@ export interface CurrentSalaryStorage {
   tenure: TenureKey;
   simulated_net_salary?: number;
   distribution_pct?: DistributionPctStorage;
+  mode?: "bruto_a_neto" | "neto_a_bruto";
+  contract_type?: "planilla" | "servicios";
+  view_perspective?: "empleado" | "empleador";
+  include_insaforp?: boolean;
 }
 
 export interface AppPrefs {

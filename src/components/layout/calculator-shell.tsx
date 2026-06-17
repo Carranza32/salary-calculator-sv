@@ -1,6 +1,5 @@
 "use client";
 
-import { ThemeAccentPicker } from "@/components/theme/theme-accent-picker";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 
 export function CalculatorShell({ children }: { children: React.ReactNode }) {

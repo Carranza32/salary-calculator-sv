@@ -1,5 +1,5 @@
 /**
- * Constantes normativas El Salvador 2025.
+ * Constantes normativas El Salvador 2026.
  * Única fuente de verdad para porcentajes, topes e ISR.
  */
 
@@ -14,7 +14,11 @@ export const ISSS_TOPE_SALARIO = 1000;
 export const ISSS_TOPE_TRABAJADOR = 30;
 export const ISSS_TOPE_PATRONAL = 75;
 
-// Salarios mínimos 2025 (referencia)
+// Insaforp (1% patronal con tope de $1,000)
+export const INSAFORP_RATE = 0.01;
+export const INSAFORP_TOPE_SALARIO = 1000;
+
+// Salarios mínimos 2026 (referencia)
 export const SALARIO_MINIMO_INDUSTRIA = 408.8;
 export const SALARIO_MINIMO_MAQUILA = 402.26;
 export const SALARIO_MINIMO_AGRICOLA = 272.72;
@@ -24,7 +28,7 @@ export const BUCKET_NECESIDADES_RATE = 0.5;
 export const BUCKET_GUSTOS_RATE = 0.3;
 export const BUCKET_AHORROS_RATE = 0.2;
 
-// Tabla ISR mensual (Decreto vigente mayo 2025)
+// Tabla ISR mensual (Decreto vigente 2026)
 export const ISR_TABLA_MENSUAL = [
   {
     desde: 0.01,

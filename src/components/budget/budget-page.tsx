@@ -153,7 +153,7 @@ export function BudgetPage() {
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <div>
-        <h2 className="text-2xl font-bold">Mi Presupuesto</h2>
+        <h1 className="text-2xl font-bold">Mi Presupuesto</h1>
         <p className="text-sm text-muted-foreground">
           Regla 50/30/20 sobre {formatCurrency(salarioNeto)} netos
         </p>

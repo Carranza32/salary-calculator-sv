@@ -27,7 +27,7 @@ export function ScrollFadeSection({
     if (!el) return;
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setVisible(true);
+      setTimeout(() => setVisible(true), 0);
       return;
     }
 
