@@ -47,8 +47,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" suppressHydrationWarning data-accent="teal">
-      <body className={`${inter.variable} font-sans antialiased`}>
+    <html lang="es" className={inter.variable} suppressHydrationWarning data-accent="teal">
+      <body className="font-sans antialiased">
         <Analytics />
         <AppProviders>
           <PageShell>{children}</PageShell>
